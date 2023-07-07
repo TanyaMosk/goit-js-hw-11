@@ -1,0 +1,18 @@
+body{
+  margin: 30px;
+}
+
+
+img{
+  width: 240px;
+  border-radius: 5px;
+  /* max-width: 100%; */
+}
+.gallery{
+  display: flex;
+  flex-wrap: wrap;
+  gap:20px;
+}
+.is-hidden{
+  display: none;
+}
