@@ -5,10 +5,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import { fetchSearchesImages } from './pixabay-api';
 import { renderMarkupImage } from './markup';
 
-
-
-
-// import NewSearchesImages from './pixabay-api'
 const refs = {
   searchForm: document.querySelector('#search-form'),
   gallery: document.querySelector('.gallery'),
@@ -18,6 +14,7 @@ const refs = {
 refs.searchForm.addEventListener('submit', onSearchForm);
 refs.loadMoreBtn.addEventListener('click', onLoadMoreBtn);
 refs.loadMoreBtn.classList.add('is-hidden');
+
 let searchQuery = '';
 let page = 1;
 const pages = 40;
