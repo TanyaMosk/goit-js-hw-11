@@ -7,7 +7,7 @@ export function renderMarkupImage({
   views,
   comments,
   downloads,
-}) {
+}) {  
   return `
   <div class="photo-card">
     <div class="gallery-img">
@@ -29,8 +29,7 @@ export function renderMarkupImage({
         <b>Downloads ${downloads}</b>
           </p>
       </div>
-  </div> `;
+  </div> `; 
 }
-
 
 

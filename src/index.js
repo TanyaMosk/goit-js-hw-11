@@ -47,7 +47,6 @@ function onSearchForm(evt) {
         refs.loadMoreBtn.classList.remove('is-hidden');
         const markup = data.hits.map(renderMarkupImage).join('');
         refs.gallery.insertAdjacentHTML('beforeend', markup);
-        
 
         let lightbox = new SimpleLightbox('.gallery-img a', {
           captionsData: 'alt',
@@ -66,8 +65,8 @@ function onSearchForm(evt) {
         Notiflix.Notify.info(
           "We're sorry, but you've reached the end of search results.",
           {
-            timeout: 2000,            
-            width: '260px',       
+            timeout: 2000,
+            width: '260px',
           }
         );
       }
@@ -79,23 +78,25 @@ function onLoadMoreBtn() {
   page += 1;
   fetchSearchesImages(searchQuery, page)
     .then(data => {
+      refs.gallery.insertAdjacentHTML(
+        'beforeend',
+        data.hits.map(renderMarkupImage).join('')
+      );
+      let lightbox = new SimpleLightbox('.gallery-img a', {
+        captionsData: 'alt',
+        captionDelay: '250',
+      });
+
       if (data.hits.length < pages) {
         refs.loadMoreBtn.classList.add('is-hidden');
-        // console.log(data.hits);
-        // const markup = data.hits.map(renderMarkupImage).join('');
 
         Notiflix.Notify.info(
           "We're sorry, but you've reached the end of search results.",
           {
-            timeout: 2000,            
-            width: '260px',           
+            timeout: 2000,
+            width: '260px',
           }
         );
-      } else {
-        refs.gallery.insertAdjacentHTML(
-          'beforeend',
-          data.hits.map(renderMarkupImage).join('')
-        );        
       }
     })
     .catch(onError);
@@ -105,8 +106,8 @@ function onError() {
   Notiflix.Notify.failure(
     'Oops, something went wrong 🥺. Please try reloading the page!',
     {
-      timeout: 2000,    
-      width: '260px',     
+      timeout: 2000,
+      width: '260px',
     }
   );
 }

@@ -15,12 +15,15 @@ img {
   border-radius: 5px;
   border: 1px solid black;
   margin-bottom: 20px;
+  box-shadow: 2px 5px 4px darkblue;
   transform: scale(1);
-  transition: transform 500ms linear, background-color 500ms linear;
+  transition: transform 500ms linear, background-color 500ms linear,
+    box-shadow 500ms linear;
 }
 .photo-card:hover {
   transform: scale(1.1);
   background-color: #fff;
+  box-shadow: 2px 5px 4px transparent;
 }
 
 .gallery {
@@ -33,28 +36,28 @@ img {
 .gallery-img {
 }
 
-
 button {
   border: 2px solid black;
   margin-left: 30px;
   border-radius: 5px;
-  padding: 5px;
-  background-color: transparent;
+  padding: 5px 10px;
+  background-color: blue;
   color: black;
   font-weight: 700;
   font-size: 18px;
-
+  transform: scale(1.1);
   transition: border 250ms linear, color 250ms linear;
 }
 button:hover,
 button:focus {
-  border: 2px solid orange;
-  color: orange;
+  /* border: 2px solid white; */
+  color: white;
+  transform: scale(1);
 }
 
 .load-more-btn {
   border: 2px solid darkblue;
-  color: darkblue;
+  /* color: darkblue; */
   display: block;
   margin: auto;
   margin-bottom: 30px;
