@@ -25,8 +25,8 @@ function onSearchForm(evt) {
 
   searchQuery = evt.currentTarget.searchQuery.value.trim();
 
-  page = 1;
   console.log(searchQuery);
+  page = 1;
 
   fetchSearchesImages(searchQuery, page)
     .then(data => {
@@ -86,7 +86,7 @@ function onLoadMoreBtn() {
         captionsData: 'alt',
         captionDelay: '250',
       });
-
+      //  console.log(data.hits.length);
       if (data.hits.length < pages) {
         refs.loadMoreBtn.classList.add('is-hidden');
 
