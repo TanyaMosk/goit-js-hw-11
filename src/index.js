@@ -35,8 +35,10 @@ async function onSearchForm(evt) {
     console.log(searchQuery);
 
     if (searchQuery === '') {
+      refs.gallery.innerHTML = '';
+      refs.loadMoreBtn.classList.add('is-hidden');
       Notiflix.Notify.info(
-        'Sorry, you entered incorrect search information. Please fill in the search field and try again!',
+        'Sorry 🥺, you entered incorrect search information. Please fill in the search field and try again!',
         {
           timeout: 3000,
           width: '260px',
@@ -62,9 +64,14 @@ async function onSearchForm(evt) {
     } else {
       refs.gallery.innerHTML = '';
       refs.loadMoreBtn.classList.remove('is-hidden');
-      const markup = data.hits.map(renderMarkupImage).join('');
-      refs.gallery.insertAdjacentHTML('beforeend', markup);
-      
+
+      refs.gallery.insertAdjacentHTML(
+        'beforeend',
+        renderMarkupImage(data.hits)
+      );
+      // const markup = data.hits.map(renderMarkupImage).join('');
+      // refs.gallery.insertAdjacentHTML('beforeend', markup);
+
       lightbox.refresh();
 
       Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`, {
@@ -90,14 +97,18 @@ async function onSearchForm(evt) {
 }
 
 async function onLoadMoreBtn() {
+  page += 1;
+
   try {
-    page += 1;
+    
     const data = await fetchSearchesImages(searchQuery, page);
 
-    refs.gallery.insertAdjacentHTML(
-      'beforeend',
-      data.hits.map(renderMarkupImage).join('')
-    );
+    refs.gallery.insertAdjacentHTML('beforeend', renderMarkupImage(data.hits));
+
+    // refs.gallery.insertAdjacentHTML(
+    //   'beforeend',
+    //   data.hits.map(renderMarkupImage).join('')
+    // );
     lightbox.refresh();
 
     //  console.log(data.hits.length);
