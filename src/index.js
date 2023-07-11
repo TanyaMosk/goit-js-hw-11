@@ -27,15 +27,28 @@ let lightbox = new SimpleLightbox('.gallery-img a', {
 
 async function onSearchForm(evt) {
   evt.preventDefault();
+
   try {
     searchQuery = evt.currentTarget.searchQuery.value.trim();
 
     console.log(searchQuery);
+
+    if (searchQuery === '') {
+        Notiflix.Notify.info(
+          'Sorry, you entered incorrect search information. Please fill in the search field and try again!',
+          {
+            timeout: 4000,
+            width: '260px',
+          }
+        );
+      return;
+    }
+    
     page = 1;
 
     const data = await fetchSearchesImages(searchQuery, page);
 
-    if (data.totalHits === 0 || searchQuery === '') {
+    if (data.totalHits === 0) {
       refs.gallery.innerHTML = '';
       refs.loadMoreBtn.classList.add('is-hidden');
 
@@ -76,30 +89,42 @@ async function onSearchForm(evt) {
   }
 }
 
-function onLoadMoreBtn() {
-  page += 1;
-  fetchSearchesImages(searchQuery, page)
-    .then(data => {
-      refs.gallery.insertAdjacentHTML(
-        'beforeend',
-        data.hits.map(renderMarkupImage).join('')
+async function onLoadMoreBtn() {
+  try {
+    page += 1;
+    const data = await fetchSearchesImages(searchQuery, page);
+
+    refs.gallery.insertAdjacentHTML(
+      'beforeend',
+      data.hits.map(renderMarkupImage).join('')
+    );
+    lightbox.refresh();
+
+    //  console.log(data.hits.length);
+    if (data.hits.length < pages) {
+      refs.loadMoreBtn.classList.add('is-hidden');
+
+      Notiflix.Notify.info(
+        "We're sorry, but you've reached the end of search results.",
+        {
+          timeout: 2000,
+          width: '260px',
+        }
       );
-      lightbox.refresh();
+    }
+  } catch {
+    onError;
+  }
+}
 
-      //  console.log(data.hits.length);
-      if (data.hits.length < pages) {
-        refs.loadMoreBtn.classList.add('is-hidden');
-
-        Notiflix.Notify.info(
-          "We're sorry, but you've reached the end of search results.",
-          {
-            timeout: 2000,
-            width: '260px',
-          }
-        );
-      }
-    })
-    .catch(onError);
+function onError() {
+  Notiflix.Notify.failure(
+    'Oops, something went wrong 🥺. Please try reloading the page!',
+    {
+      timeout: 2000,
+      width: '260px',
+    }
+  );
 }
 
 // function onSearchForm(evt) {
@@ -178,12 +203,4 @@ function onLoadMoreBtn() {
 //     .catch(onError);
 // }
 
-function onError() {
-  Notiflix.Notify.failure(
-    'Oops, something went wrong 🥺. Please try reloading the page!',
-    {
-      timeout: 2000,
-      width: '260px',
-    }
-  );
-}
+
