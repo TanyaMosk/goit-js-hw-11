@@ -11,10 +11,10 @@ const refs = {
   loadMoreBtn: document.querySelector('.load-more'),
 };
 
-refs.loadMoreBtn.classList.add('load-more-btn');
 refs.searchForm.addEventListener('submit', onSearchForm);
 refs.loadMoreBtn.addEventListener('click', onLoadMoreBtn);
 refs.loadMoreBtn.classList.add('is-hidden');
+refs.loadMoreBtn.classList.add('load-more-btn');
 
 let searchQuery = '';
 let page = 1;
@@ -29,22 +29,21 @@ async function onSearchForm(evt) {
   evt.preventDefault();
 
   try {
+    page = 1;
     searchQuery = evt.currentTarget.searchQuery.value.trim();
 
     console.log(searchQuery);
 
     if (searchQuery === '') {
-        Notiflix.Notify.info(
-          'Sorry, you entered incorrect search information. Please fill in the search field and try again!',
-          {
-            timeout: 4000,
-            width: '260px',
-          }
-        );
+      Notiflix.Notify.info(
+        'Sorry, you entered incorrect search information. Please fill in the search field and try again!',
+        {
+          timeout: 3000,
+          width: '260px',
+        }
+      );
       return;
     }
-    
-    page = 1;
 
     const data = await fetchSearchesImages(searchQuery, page);
 
@@ -65,6 +64,7 @@ async function onSearchForm(evt) {
       refs.loadMoreBtn.classList.remove('is-hidden');
       const markup = data.hits.map(renderMarkupImage).join('');
       refs.gallery.insertAdjacentHTML('beforeend', markup);
+      
       lightbox.refresh();
 
       Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`, {
@@ -85,7 +85,7 @@ async function onSearchForm(evt) {
       );
     }
   } catch {
-    onError;
+    onError();
   }
 }
 
@@ -113,7 +113,7 @@ async function onLoadMoreBtn() {
       );
     }
   } catch {
-    onError;
+    onError();
   }
 }
 
@@ -202,5 +202,3 @@ function onError() {
 //     })
 //     .catch(onError);
 // }
-
-
